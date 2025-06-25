@@ -1,8 +1,11 @@
 package main
 
 import (
-	"github.com/aditya-gupta-dev/torgo/cmd"
+	"fmt"
+	"os"
+
 	"github.com/aditya-gupta-dev/torgo/model"
+	"github.com/aditya-gupta-dev/torgo/torgo"
 	"github.com/alexflint/go-arg"
 )
 
@@ -11,6 +14,17 @@ func main() {
 	arg.MustParse(&args)
 
 	if args.IP {
-		cmd.ShowIP()
+		ip, err := torgo.ShowIP()
+
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Printf("\033[32m%s\033[0m", ip)
+		os.Exit(0)
+	}
+
+	if args.ChangeIP {
+		torgo.ChangeIPRepeatedly(args.Interval, args.Count)
 	}
 }
