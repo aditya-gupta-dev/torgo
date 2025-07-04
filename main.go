@@ -17,7 +17,7 @@ func main() {
 		ip, err := torgo.ShowIP()
 
 		if err != nil {
-			panic(err)
+			fmt.Println("Failed to get IP :(")
 		}
 
 		fmt.Printf("\033[32m%s\033[0m", ip)
@@ -26,5 +26,7 @@ func main() {
 
 	if args.ChangeIP {
 		torgo.ChangeIPRepeatedly(args.Interval, args.Count)
+	} else {
+		torgo.ChangeIPRepeatedly(10, 0)
 	}
 }

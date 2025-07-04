@@ -5,5 +5,7 @@ func ChangeIPRepeatedly(interval int64, count int64) {
 		for {
 		}
 	} else {
+		for range count {
+		}
 	}
 }
