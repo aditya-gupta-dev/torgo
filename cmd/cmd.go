@@ -17,5 +17,9 @@ func PrintIPAndExit() {
 }
 
 func StartIPChanging(interval, count int64) {
-	torgo.ChangeIPRepeatedly(interval, count)
+	torPath, err := torgo.CheckTorInstallation()
+	if err != nil {
+		// TODO: display tor not installed error
+	}
+	torgo.ChangeIPRepeatedly(torPath, interval, count)
 }

@@ -14,6 +14,8 @@ func main() {
 		cmd.PrintIPAndExit()
 	}
 
+	model.PrintTitle()
+
 	if args.ChangeIP {
 		cmd.StartIPChanging(args.Interval, args.Count)
 	} else {
