@@ -42,7 +42,7 @@ func CheckTorForWindows() (string, error) {
 
 func CheckTorForMac() (string, error) {
 	macPaths := []string{
-		"/Applications/Tor Browser.app/Contents/MacOS/Tor/tor",
+		"/Applications/TorBrowser.app/Contents/MacOS/Tor/tor",
 		"/usr/local/bin/tor",
 		"/opt/homebrew/bin/tor",
 		"/usr/bin/tor",

@@ -16,9 +16,5 @@ func main() {
 
 	model.PrintTitle()
 
-	if args.ChangeIP {
-		cmd.StartIPChanging(args.Interval, args.Count)
-	} else {
-		cmd.StartIPChanging(args.Interval, args.Count)
-	}
+	cmd.StartIPChanging(args.Interval, args.Count)
 }
