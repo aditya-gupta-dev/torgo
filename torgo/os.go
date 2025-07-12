@@ -2,78 +2,36 @@ package torgo
 
 import (
 	"fmt"
-	"os"
-	"os/exec"
 	"runtime"
+
+	"github.com/aditya-gupta-dev/torgo/linux"
+	"github.com/aditya-gupta-dev/torgo/mac"
+	"github.com/aditya-gupta-dev/torgo/windows"
 )
 
-func CheckTorInstallation() (string, error) {
+func IsTorInstalled() (string, error) {
 	switch runtime.GOOS {
 	case "windows":
-		return CheckTorForWindows()
+		return windows.CheckTorInstallation()
 	case "darwin":
-		return CheckTorForMac()
+		return mac.CheckTorInstallation()
 	case "linux":
-		return CheckTorForLinux()
+		return linux.CheckTorInstallation()
 	default:
-		return "", fmt.Errorf("your operating system is not supported")
+		return "", fmt.Errorf("your operating system is not supported yet")
 	}
 }
 
-// TODO:
-func CheckTorForWindows() (string, error) {
+func IsTorRunning() (bool, error) {
 
-	windowsPaths := []string{
-		`C:\Program Files\Tor Browser\Browser\TorBrowser\Tor\tor.exe`,
-		`C:\Program Files (x86)\Tor Browser\Browser\TorBrowser\Tor\tor.exe`,
-		`C:\Users\%USERNAME%\Desktop\Tor Browser\Browser\TorBrowser\Tor\tor.exe`,
-		`C:\Users\%USERNAME%\AppData\Local\Tor Browser\Browser\TorBrowser\Tor\tor.exe`,
-		`C:\Tor\tor.exe`,
+	switch runtime.GOOS {
+	case "windows":
+		return windows.CheckTorStatus()
+	case "darwin":
+		return mac.CheckTorStatus()
+	case "linux":
+		return linux.CheckTorStatus()
+	default:
+		return false, fmt.Errorf("unsupported operating system found while checking tor process status")
 	}
-
-	for _, path := range windowsPaths {
-		if fileExists(path) {
-			return path, nil
-		}
-	}
-
-	return exec.LookPath("tor.exe")
-}
-
-func CheckTorForMac() (string, error) {
-	macPaths := []string{
-		"/Applications/TorBrowser.app/Contents/MacOS/Tor/tor",
-		"/usr/local/bin/tor",
-		"/opt/homebrew/bin/tor",
-		"/usr/bin/tor",
-		"/Applications/TorBrowser.app/Contents/Resources/TorBrowser/Tor/tor",
-	}
-
-	for _, path := range macPaths {
-		if fileExists(path) {
-			return path, nil
-		}
-	}
-
-	torPath, err := exec.LookPath("tor")
-	if err == nil {
-		return torPath, nil
-	}
-
-	output, err := exec.Command("which", "tor").Output()
-	if err == nil {
-		return string(output), nil
-	}
-
-	return "", fmt.Errorf("tor not found")
-}
-
-func CheckTorForLinux() (string, error) {
-	output, err := exec.Command("which", "tor").Output()
-	return string(output), err
-}
-
-func fileExists(path string) bool {
-	_, err := os.Stat(path)
-	return !os.IsNotExist(err)
 }
