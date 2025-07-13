@@ -8,7 +8,7 @@ import (
 func ChangeIPRepeatedly(torPath string, interval, count int64) {
 	if count < 1 {
 		for {
-			status, err := IsTorRunning()
+			status, err := IsTorRunning(torPath)
 			if err != nil {
 				panic(err)
 			}
@@ -21,7 +21,7 @@ func ChangeIPRepeatedly(torPath string, interval, count int64) {
 		}
 	} else {
 		for range count {
-			status, err := IsTorRunning()
+			status, err := IsTorRunning(torPath)
 			if err != nil {
 				panic(err)
 			}

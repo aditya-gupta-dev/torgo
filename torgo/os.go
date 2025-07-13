@@ -22,15 +22,15 @@ func IsTorInstalled() (string, error) {
 	}
 }
 
-func IsTorRunning() (bool, error) {
+func IsTorRunning(torPath string) (bool, error) {
 
 	switch runtime.GOOS {
 	case "windows":
-		return windows.CheckTorStatus()
+		return windows.CheckTorStatus(torPath)
 	case "darwin":
-		return mac.CheckTorStatus()
+		return mac.CheckTorStatus(torPath)
 	case "linux":
-		return linux.CheckTorStatus()
+		return linux.CheckTorStatus(torPath)
 	default:
 		return false, fmt.Errorf("unsupported OS found while checking tor process status")
 	}
