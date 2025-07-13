@@ -36,3 +36,32 @@ func CheckTorStatus() (bool, error) {
 	outputStr := string(output)
 	return strings.Contains(outputStr, "tor"), nil
 }
+
+func KillTor() error {
+	cmd := exec.Command("taskkill", "/F", "/IM", "tor.exe")
+	_, err := cmd.Output()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+func RestartTor(torPath string) error {
+	status, err := CheckTorStatus()
+	if err != nil {
+		return err
+	}
+
+	if status {
+		if err = KillTor(); err != nil {
+			return err
+		}
+	}
+
+	cmd := exec.Command(torPath)
+	_, err = cmd.Output()
+
+	if err != nil {
+		return err
+	}
+	return nil
+}

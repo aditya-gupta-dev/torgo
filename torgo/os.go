@@ -32,6 +32,19 @@ func IsTorRunning() (bool, error) {
 	case "linux":
 		return linux.CheckTorStatus()
 	default:
-		return false, fmt.Errorf("unsupported operating system found while checking tor process status")
+		return false, fmt.Errorf("unsupported OS found while checking tor process status")
+	}
+}
+
+func RestartTorService(torPath string) error {
+	switch runtime.GOOS {
+	case "windows":
+		return windows.RestartTor(torPath)
+	case "darwin":
+		return mac.RestartTor(torPath)
+	case "linux":
+		return linux.RestartTor(torPath)
+	default:
+		return fmt.Errorf("unsupported OS found while restarting tor")
 	}
 }
