@@ -2,6 +2,7 @@ package linux
 
 import (
 	"os/exec"
+	"path"
 	"strings"
 )
 
@@ -10,8 +11,8 @@ func CheckTorInstallation() (string, error) {
 	return string(output), err
 }
 
-func CheckTorStatus() (bool, error) {
-	cmd := exec.Command("systemctl", "is-active", "tor")
+func CheckTorStatus(torPath string) (bool, error) {
+	cmd := exec.Command("systemctl", "is-active", path.Base(torPath))
 	output, err := cmd.Output()
 	if err != nil {
 		return false, err
@@ -22,8 +23,8 @@ func CheckTorStatus() (bool, error) {
 	return status == "active", nil
 }
 
-func KillTor() error {
-	cmd := exec.Command("pkill", "-f", "tor")
+func KillTor(torPath string) error {
+	cmd := exec.Command("pkill", "-f", path.Base(torPath))
 	_, err := cmd.Output()
 	if err != nil {
 		return err
@@ -32,13 +33,13 @@ func KillTor() error {
 }
 
 func RestartTor(torPath string) error {
-	status, err := CheckTorStatus()
+	status, err := CheckTorStatus(torPath)
 	if err != nil {
 		return err
 	}
 
 	if status {
-		if err = KillTor(); err != nil {
+		if err = KillTor(torPath); err != nil {
 			return err
 		}
 	}

@@ -3,6 +3,7 @@ package mac
 import (
 	"fmt"
 	"os/exec"
+	"path"
 	"strings"
 
 	"github.com/aditya-gupta-dev/torgo/utils"
@@ -36,8 +37,8 @@ func CheckTorInstallation() (string, error) {
 	return "", fmt.Errorf("tor not found")
 }
 
-func CheckTorStatus() (bool, error) {
-	cmd := exec.Command("pgrep", "tor")
+func CheckTorStatus(torPath string) (bool, error) {
+	cmd := exec.Command("pgrep", path.Base(torPath))
 	output, err := cmd.Output()
 	if err != nil {
 		return false, err
@@ -46,8 +47,8 @@ func CheckTorStatus() (bool, error) {
 	return strings.TrimSpace(outputStr) != "", nil
 }
 
-func KillTor() error {
-	cmd := exec.Command("pkill", "-f", "tor")
+func KillTor(torPath string) error {
+	cmd := exec.Command("pkill", "-f", path.Base(torPath))
 	_, err := cmd.Output()
 	if err != nil {
 		return err
@@ -56,13 +57,13 @@ func KillTor() error {
 }
 
 func RestartTor(torPath string) error {
-	status, err := CheckTorStatus()
+	status, err := CheckTorStatus(torPath)
 	if err != nil {
 		return err
 	}
 
 	if status {
-		if err = KillTor(); err != nil {
+		if err = KillTor(torPath); err != nil {
 			return err
 		}
 	}
