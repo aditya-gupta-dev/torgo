@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/aditya-gupta-dev/torgo/model"
 	"github.com/aditya-gupta-dev/torgo/torgo"
 )
 
@@ -18,11 +17,4 @@ func PrintIPAndExit() {
 }
 
 func StartIPChanging(interval, count int64) {
-	torPath, err := torgo.IsTorInstalled()
-	if err != nil {
-		msg := model.BrightRed + `Unable to find tor on your system` + model.Reset
-
-		fmt.Println(msg)
-	}
-	torgo.ChangeIPRepeatedly(torPath, interval, count)
 }
