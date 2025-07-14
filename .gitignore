@@ -1,1 +1,4 @@
 *.exe
+test.go
+main
+torgo
